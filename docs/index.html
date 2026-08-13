@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>漢字抜け熟語</title>
+        <link href="./css/main.css" rel="stylesheet" type="text/css">
+    </head>
+
+    <body>
+        <head>
+            <h1>漢字抜け熟語</h1>
+        </head>
+        <div class="settingErea">
+            <h2 class="displayEditMode">編集モード</h2>
+            <h2 class="displaySolveMode">解答モード</h2>
+            <details class=" displayEditMode">
+                <summary class="settingLabel">
+                    URL出力
+                </summary>
+                <p>
+                    <button id="showEditUrl">編集</button>
+                    <button id="showSolveUrl">解答</button>
+                    <button id="showSolveCheckUrl">正解判定付き</button>
+                </p>
+                <p id="URLLine" class="hidden"><a href id="showURL" target="_blank"></a></p>
+            </details>
+            <p id="settingSize" class="displayEditMode">
+                <label for="setRow" class="settingLabel">１行の熟語数</label>
+                <input type="number" id="setRow" min="1" value="4">
+            </p>
+        </div>
+        <div class="inputErea displayEditMode">
+            <label for="inputText">熟語を入力（改行で区切る）</label>
+            <br>
+            <textarea id="inputText" name="t"></textarea>
+        </div>
+        <br>
+        <div id="analyticsErea" class="displayEditMode">
+            <details>
+                <summary>漢字の使用数</summary>
+                <div id="countKanji"></div>
+            </details>
+            <details>
+                <summary>包含関係</summary>
+                <div id="includedJukugo"></div>
+            </details>
+        </div>
+        <div id="displayErea">
+            <p id="problem">問題文</p>
+            <p id="answer">解答表</p>
+        </div>
+        <script type="text/javascript" src="./js/kanji.js"></script>
+        <script type="text/javascript" src="./js/analytics.js"></script>
+        <script type="text/javascript" src="./js/elements.js"></script>
+        <script type="text/javascript" src="./js/main.js"></script>
+    </body>
+</html>

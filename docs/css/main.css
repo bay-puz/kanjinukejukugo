@@ -1,0 +1,113 @@
+body {
+    text-align: center;
+}
+
+button {
+    padding: 4px;
+    border-radius: 0.5em;
+    background-color: lightblue;
+    border: none;
+    cursor: pointer;
+}
+
+table {
+    margin: auto;
+    border: solid;
+}
+
+thead {
+    border-bottom: solid;
+}
+
+td {
+    width: 2em;
+    text-align: center;
+}
+
+th, td {
+    height: 2em;
+    cursor: default;
+    user-select: none;
+    font-size: auto;
+    font-weight: normal;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+footer {
+    text-align: end;
+}
+
+.settingErea {
+    background-color: whitesmoke;
+    padding-bottom: 0.1em;
+}
+
+.settingLabel {
+    color: darkblue;
+    font-size: large;
+}
+
+#URLLine {
+    width: 30em;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#inputText {
+    height: 20em;
+    width: 10em;
+}
+
+.hidden {
+    display: none;
+}
+
+.jukugo {
+    letter-spacing: 0.5em;
+    line-height: 2.5em;
+    text-align: center;
+}
+
+.nukeKanji {
+    ruby-position: under;
+}
+
+.nukeKanji rt {
+    font-size: x-small;
+    letter-spacing: 0em;
+}
+
+#answer table {
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#answer th{
+    font-size: small;
+}
+
+#answer td{
+    border: 1px solid;
+    min-width: 1.5em;
+    max-width: 1.5em;
+    height: 1.5em;
+}
+
+#answer .charInput {
+    width: 1.2em;
+    border: none;
+    text-align: center;
+}
+
+.highlight {
+    background-color: beige;
+}

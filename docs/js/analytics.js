@@ -1,0 +1,3 @@
+function analytics(problemList, answerList) {
+
+}
