@@ -25,9 +25,9 @@ function createHintKanjiElement(kanji) {
     return element
 }
 
-function createNukeKanjiElement(number) {
+function createNukeKanjiElement(number, kanji = "＿") {
     const element = document.createElement("ruby")
-    element.innerText = "＿"
+    element.innerText = kanji
     element.classList.add(getNukeClass(number))
     element.classList.add("nukeKanji")
 
@@ -86,7 +86,7 @@ function createInputCharElement(number) {
     inputElement.id = elementId
     inputElement.classList.add("charInput")
     inputElement.addEventListener("change", function(){writeChar(number)})
-    inputElement.addEventListener("focusin", function(){highlight(number)})
+    inputElement.addEventListener("focusin", function(){clearHighlight(); highlight(number)})
     return inputElement
 }
 
@@ -96,7 +96,8 @@ function writeChar(number) {
 
     var charElements = document.getElementsByClassName(getNukeClass(number))
     for (var charElement of charElements) {
-        charElement.innerText = inputChar
+        const newElement = createNukeKanjiElement(number, inputChar)
+        charElement.replaceWith(newElement)
     }
 }
 
