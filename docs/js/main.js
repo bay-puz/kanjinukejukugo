@@ -12,7 +12,9 @@ function setProblem() {
     if (params.has("m") && params.get("m") != "edit" ) {
         setSolveMode(params)
     }
-    setEditMode(params)
+    else {
+        setEditMode(params)
+    }
 }
 setProblem();
 
@@ -24,7 +26,7 @@ function setEditMode(params) {
     setInput(inputList, row)
 
     const [problemList, answerList] = ListToProblem(inputList)
-    show(problemList, answerList.length, row, 30)
+    show(problemList, row)
 }
 
 function setSolveMode(params) {
@@ -32,14 +34,14 @@ function setSolveMode(params) {
     var row = params.has("r") ? Number(params.get("r")) : 4
     const problemList = params.has("p") ? decodeProblem(params.get("p")) : []
     const answerList = params.has("a") ? decodeAnswer(params.get("a")) : []
-    show(problemList, answerList.length, row, 30)
+    show(problemList, row)
 }
 
 function update() {
     const problemText = document.getElementById("inputText").value
     const row = document.getElementById("setRow").value
     const [problemList, answerList] = ListToProblem(inputToList(problemText))
-    show(problemList, answerList.length, Number(row), 30)
+    show(problemList, Number(row))
 }
 
 function setInput(inputList, row) {
@@ -47,10 +49,12 @@ function setInput(inputList, row) {
     inputElement.value = inputList.join('\n')
 }
 
-function show(problemList, tableLength, row, tableRow) {
+function show(problemList, row) {
     if (problemList.length === 0) {
         return
     }
+    const tableLength = getTableLength(problemList)
+    const tableRow = 30
 
     showBoard(problemList, row)
     showTable(tableLength, tableRow)
