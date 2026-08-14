@@ -33,8 +33,10 @@ function setSolveMode(params) {
     setMode(false)
     var row = params.has("r") ? Number(params.get("r")) : 4
     const problemList = params.has("p") ? decodeProblem(params.get("p")) : []
-    const answerList = params.has("a") ? decodeAnswer(params.get("a")) : []
     show(problemList, row)
+    if (params.has("a")) {
+        setAnswerCheck()
+    }
 }
 
 function update() {
@@ -114,6 +116,28 @@ function setMode(isEdit) {
     for (const element of elements) {
         element.classList.add("hidden")
     }
+}
+
+function setAnswerCheck() {
+    var answerCheckErea = document.getElementById("answerCheckErea")
+    answerCheckErea.classList.remove("hidden")
+    document.getElementById("checkAnswer").addEventListener("click", function(){checkAnswer()} );
+}
+
+function checkAnswer() {
+    const answerList = decodeAnswer(new URLSearchParams(document.location.search).get("a"))
+    var solveList = []
+    document.querySelectorAll(".charInput").forEach(function(inputElement) {
+        solveList.push(inputElement.value)
+    });
+    var isCorrect = true
+    for (let i = 0; i < answerList.length; i++) {
+        if (solveList[i] !== answerList[i]) {
+            isCorrect = false
+            break
+        }
+    }
+    alert(isCorrect ? "正解です！" : "不正解です。")
 }
 
 function clickProblem(event) {

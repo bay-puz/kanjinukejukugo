@@ -35,6 +35,9 @@ function encodeAnswer(answerList) {
 }
 
 function decodeList(code) {
+    if (code.length === 0) {
+        return []
+    }
     var inputList = []
     for (const lineCode of code.split('_')) {
         var line = []
@@ -47,6 +50,9 @@ function decodeList(code) {
 }
 
 function decodeProblem(code) {
+    if (code.length === 0) {
+        return []
+    }
     var problemList = []
     for (const jukugoCode of code.split('_')) {
         var jukugo = []
@@ -63,6 +69,9 @@ function decodeProblem(code) {
 }
 
 function decodeAnswer(code) {
+    if (code.length === 0) {
+        return []
+    }
     var answerList = []
     for (const charCode of code.split('_')) {
         answerList.push(decodeKanji(charCode))
