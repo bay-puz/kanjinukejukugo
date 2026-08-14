@@ -51,7 +51,7 @@ function decodeProblem(code) {
     for (const jukugoCode of code.split('_')) {
         var jukugo = []
         for (const charCode of jukugoCode.split('-')) {
-            if (charCode.startsWith('.')) {
+            if (parseInt(charCode) || parseInt(charCode) === 0) {
                 jukugo.push(decodeNumber(charCode))
             } else {
                 jukugo.push(decodeKanji(charCode))
@@ -71,11 +71,11 @@ function decodeAnswer(code) {
 }
 
 function encodeNumber(num) {
-    return '.' + encoder(num)
+    return (num + 1).toString()
 }
 
 function decodeNumber(code) {
-    return decoder(code.slice(1))
+    return parseInt(code) - 1
 }
 
 function encodeKanji(kanji) {
@@ -89,25 +89,24 @@ function decodeKanji(code) {
     return String.fromCodePoint(codePoint)
 }
 
+const converter = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-const converter = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-function encoder(num) {
-    if (num < 0 ){
+function encoder(codePoint) {
+    if (codePoint < 0 ){
         return ""
     }
-    if (num >= converter.length) {
-        return encoder(Math.floor(num / converter.length)) + encoder(num % converter.length)
+    if (codePoint >= converter.length) {
+        return encoder(Math.floor(codePoint / converter.length)) + encoder(codePoint % converter.length)
     }
-    return converter[num]
+    return converter[codePoint]
 }
 
 function decoder(code) {
-    let num = 0
+    let codePoint = 0
     for (const char of code) {
-        num = num * converter.length + converter.indexOf(char)
+        codePoint = codePoint * converter.length + converter.indexOf(char)
     }
-    return num
+    return codePoint
 }
 
 function viewNumber(num) {
