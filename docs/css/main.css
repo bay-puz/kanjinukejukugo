@@ -70,39 +70,39 @@ footer {
     display: none;
 }
 
-.jukugo {
+#board .jukugo {
     letter-spacing: 0.5em;
     line-height: 2.5em;
     text-align: center;
 }
 
-.nukeKanji {
+#board .nukeKanji {
     ruby-position: under;
 }
 
-.nukeKanji rt {
+#board .nukeKanji rt {
     font-size: x-small;
     letter-spacing: 0em;
 }
 
-#answer table {
+#table table {
     border-collapse: collapse;
     margin-left: auto;
     margin-right: auto;
 }
 
-#answer th{
+#table th{
     font-size: small;
 }
 
-#answer td{
+#table td{
     border: 1px solid;
     min-width: 1.5em;
     max-width: 1.5em;
     height: 1.5em;
 }
 
-#answer .charInput {
+#table .charInput {
     width: 1.2em;
     border: none;
     text-align: center;

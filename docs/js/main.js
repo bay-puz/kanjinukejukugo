@@ -4,61 +4,70 @@ document.getElementById("showEditUrl").addEventListener("click", function(){show
 document.getElementById("showSolveUrl").addEventListener("click", function(){showUrl(false, false)} );
 document.getElementById("showSolveCheckUrl").addEventListener("click", function(){showUrl(false, true)} );
 
-document.getElementById("problem").addEventListener("click", clickProblem);
+document.getElementById("board").addEventListener("click", clickProblem);
+document.getElementById("table").addEventListener("click", clickProblem);
 
 function setProblem() {
     var params = new URLSearchParams(document.location.search);
-    var isEdit = true
     if (params.has("m") && params.get("m") != "edit" ) {
-        isEdit = false
+        setSolveMode(params)
     }
-    setMode(isEdit)
-    var problemList = []
-    if (params.has("p")) {
-        problemList = decodeProblem(params.get("p"))
-    }
-    var answerList = []
-    if (params.has("a")) {
-        answerList = decodeAnswer(params.get("a"))
-    }
-    var row = params.has("r") ? Number(params.get("r")) : 4
-    show(problemList, answerList, row, isEdit)
-    document.getElementById("inputText").value = problemToInput(problemList, answerList)
-    document.getElementById("setRow").value = row
+    setEditMode(params)
 }
 setProblem();
+
+function setEditMode(params) {
+    setMode(true)
+    var row = params.has("r") ? Number(params.get("r")) : 4
+
+    const inputList = params.has("t") ? decodeList(params.get("t")) : []
+    setInput(inputList, row)
+
+    const [problemList, answerList] = ListToProblem(inputList)
+    show(problemList, answerList.length, row, 30)
+}
+
+function setSolveMode(params) {
+    setMode(false)
+    var row = params.has("r") ? Number(params.get("r")) : 4
+    const problemList = params.has("p") ? decodeProblem(params.get("p")) : []
+    const answerList = params.has("a") ? decodeAnswer(params.get("a")) : []
+    show(problemList, answerList.length, row, 30)
+}
 
 function update() {
     const problemText = document.getElementById("inputText").value
     const row = document.getElementById("setRow").value
-    const [problemList, answerList] = inputToList(problemText)
-    show(problemList, answerList, Number(row))
+    const [problemList, answerList] = ListToProblem(inputToList(problemText))
+    show(problemList, answerList.length, Number(row), 30)
 }
 
-function show(problemList, answerList, row, isEdit = true) {
+function setInput(inputList, row) {
+    var inputElement = document.getElementById("inputText")
+    inputElement.value = inputList.join('\n')
+}
+
+function show(problemList, tableLength, row, tableRow) {
     if (problemList.length === 0) {
         return
     }
 
-    showProblem(problemList, row)
-    if (isEdit) {
-        showAnswer(answerList)
-        analytics(problemList, answerList)
-    }
+    showBoard(problemList, row)
+    showTable(tableLength, tableRow)
+    analytics(problemList)
 }
 
-function showProblem (problemList, row) {
-    var problemElement = document.getElementById("problem")
+function showBoard (problemList, row) {
+    var problemElement = document.getElementById("board")
     problemElement.innerHTML = null
-    problemElement.appendChild(createProblemElement(problemList, row))
+    problemElement.appendChild(createBoardElement(problemList, row))
 }
 
-function showAnswer(answerList) {
-    var answerElement = document.getElementById("answer")
+function showTable (tableLength, tableRow) {
+    var answerElement = document.getElementById("table")
     answerElement.innerHTML = null
-    answerElement.appendChild(createAnswerElement(answerList.length))
+    answerElement.appendChild(createTableElement(tableLength, tableRow))
 }
-
 
 function showUrl(isEdit, isCheck) {
     var params = new URLSearchParams();
@@ -71,10 +80,18 @@ function showUrl(isEdit, isCheck) {
     const text = document.getElementById("inputText").value
     const row = document.getElementById("setRow").value
 
-    const problem = inputToProblem(text)
-    params.append("p", encodeProblem(problem))
-    if (isEdit || isCheck) {
-        params.append("a", encodeAnswer(problem))
+    const inputList = inputToList(text)
+
+    if (isEdit) {
+        const inputList = inputToList(text)
+        params.append("t", encodeList(inputList))
+    }
+    else {
+        const [problemList, answerList] = ListToProblem(inputList)
+        params.append("p", encodeProblem(problemList))
+        if (isCheck) {
+            params.append("a", encodeAnswer(answerList))
+        }
     }
     params.append("r", row)
 

@@ -1,6 +1,6 @@
-function createProblemElement(problem, row) {
+function createBoardElement(problemList, row) {
     const element = document.createElement("span")
-    for (const jukugo of problem) {
+    for (const jukugo of problemList) {
         element.appendChild(createJukugoElement(jukugo))
     }
     return element
@@ -38,39 +38,39 @@ function createNukeKanjiElement(number, kanji = "＿") {
     return element
 }
 
-function createAnswerElement(length, answerRow = 30) {
+function createTableElement(length, row) {
     const tableElement = document.createElement("table")
     if (length <= 0) {
         return tableElement
     }
 
     var start = 0
-    var end = Math.min(answerRow, length)
+    var end = Math.min(row, length)
     while (end < length) {
-        tableElement.appendChild(createAnswerHeadElement(start, end))
-        tableElement.appendChild(createAnswerBodyElement(start, end))
+        tableElement.appendChild(createTableHeadElement(start, end))
+        tableElement.appendChild(createTableBodyElement(start, end))
         start = end
-        end = Math.min(end + answerRow, length)
+        end = Math.min(end + row, length)
     }
-    tableElement.appendChild(createAnswerHeadElement(start, length))
-    tableElement.appendChild(createAnswerBodyElement(start, length))
+    tableElement.appendChild(createTableHeadElement(start, length))
+    tableElement.appendChild(createTableBodyElement(start, length))
 
     return tableElement
 }
 
-function createAnswerHeadElement(start, end){
+function createTableHeadElement(start, end){
     var headElement = document.createElement("tr")
     for (let number = start; number < end; number++) {
         var thElement = document.createElement("th")
         thElement.innerText = viewNumber(number)
-        thElement.id = getAnswerId(number)
+        thElement.id = getTableId(number)
         headElement.appendChild(thElement)
     }
     headElement.addEventListener("click", clickProblem)
     return headElement
 }
 
-function createAnswerBodyElement(start, end) {
+function createTableBodyElement(start, end) {
     var bodyElement = document.createElement("tr")
     for (let number = start; number < end; number++) {
         var tdElement = document.createElement("td")
@@ -105,8 +105,8 @@ function getNukeClass(number) {
     return "nuke" + String(number)
 }
 
-function getAnswerId(number) {
-    return "answer" + String(number)
+function getTableId(number) {
+    return "table" + String(number)
 }
 
 function getCharInputId(number) {
@@ -124,8 +124,11 @@ function highlightElement(element) {
     if(element === null) return
     clearHighlight()
     var number = -1
-    if(element.id.startsWith("answer")) {
-        number = Number(element.id.substring(6))
+    if(element.id.startsWith("table")) {
+        number = Number(element.id.substring(5))
+    }
+    else if(element.id.startsWith("input")) {
+        number = Number(element.id.substring(5))
     }
     else {
         for(const elementClass of element.classList){
@@ -135,7 +138,9 @@ function highlightElement(element) {
             }
         }
     }
-    highlight(number)
+    if(number >= 0) {
+        highlight(number)
+    }
 }
 
 function highlight(number) {
@@ -143,8 +148,10 @@ function highlight(number) {
     for (var element of elements) {
         element.classList.add("highlight")
     }
-    document.getElementById(getAnswerId(number)).classList.add("highlight")
-    document.getElementById(getCharInputId(number)).focus()
+    if (document.getElementById(getTableId(number)) !== null) {
+        document.getElementById(getTableId(number)).classList.add("highlight")
+        document.getElementById(getCharInputId(number)).focus()
+    }
 }
 
 function clearHighlight() {

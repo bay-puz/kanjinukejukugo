@@ -1,0 +1,163 @@
+function inputToList(text) {
+    var inputList = []
+    for (line of text.split('\n')) {
+        if (line.startsWith('#')) {
+            continue
+        }
+        inputList.push(line.trim())
+    }
+    return inputList
+}
+
+function ListToProblem(inputList) {
+    const allKanji = inputList.join('')
+
+    var countKanji = {}
+    for (const char of allKanji) {
+        countKanji[char] = (countKanji[char] || 0) + 1
+    }
+
+    var answerList = []
+    for (const char of allKanji) {
+        if (countKanji[char] > 1 && !answerList.includes(char)) {
+            answerList.push(char)
+        }
+    }
+
+    var problemList = []
+    for (const line of inputList) {
+        var jukugo = []
+        for (const char of line) {
+            if (countKanji[char] === 1) {
+                jukugo.push(char)
+            }
+            else {
+                const index = answerList.indexOf(char)
+                jukugo.push(index)
+            }
+        }
+        problemList.push(jukugo)
+    }
+
+    return [problemList, answerList]
+}
+
+function problemToInput(problemList, answerList) {
+    return problemList.join('\n')
+}
+
+function encodeList(inputList) {
+    var codeList = []
+    for (const line of inputList) {
+        var lineCodes = []
+        for (const char of line) {
+            lineCodes.push(encodeKanji(char))
+        }
+        codeList.push(lineCodes.join('-'))
+    }
+    return codeList.join('_')
+}
+
+function encodeProblem(problemList) {
+    var codeList = []
+    for (const jukugo of problemList) {
+        var jukugoCodes = []
+        for (const char of jukugo) {
+            if (typeof(char) === "number") {
+                jukugoCodes.push(encodeNumber(char))
+            } else {
+                jukugoCodes.push(encodeKanji(char))
+            }
+        }
+        codeList.push(jukugoCodes.join('-'))
+    }
+    return codeList.join('_')
+}
+
+function encodeAnswer(answerList) {
+    var codeList = []
+    for (const char of answerList) {
+        codeList.push(encodeKanji(char))
+    }
+    return codeList.join('_')
+}
+
+function decodeList(code) {
+    var inputList = []
+    for (const lineCode of code.split('_')) {
+        var line = []
+        for (const charCode of lineCode.split('-')) {
+            line.push(decodeKanji(charCode))
+        }
+        inputList.push(line.join(''))
+    }
+    return inputList
+}
+
+function decodeProblem(code) {
+    var problemList = []
+    for (const jukugoCode of code.split('_')) {
+        var jukugo = []
+        for (const charCode of jukugoCode.split('-')) {
+            if (charCode.startsWith('.')) {
+                jukugo.push(decodeNumber(charCode))
+            } else {
+                jukugo.push(decodeKanji(charCode))
+            }
+        }
+        problemList.push(jukugo)
+    }
+    return problemList
+}
+
+function decodeAnswer(code) {
+    var answerList = []
+    for (const charCode of code.split('_')) {
+        answerList.push(decodeKanji(charCode))
+    }
+    return answerList
+}
+
+function encodeNumber(num) {
+    return '.' + encoder(num)
+}
+
+function decodeNumber(code) {
+    return decoder(code.slice(1))
+}
+
+function encodeKanji(kanji) {
+    const codePoint = kanji.codePointAt(0)
+    const code = encoder(codePoint)
+    return code
+}
+
+function decodeKanji(code) {
+    const codePoint = decoder(code)
+    return String.fromCodePoint(codePoint)
+}
+
+
+const converter = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+function encoder(num) {
+    if (num < 0 ){
+        return ""
+    }
+    if (num >= converter.length) {
+        return encoder(Math.floor(num / converter.length)) + encoder(num % converter.length)
+    }
+    return converter[num]
+}
+
+function decoder(code) {
+    let num = 0
+    for (const char of code) {
+        num = num * converter.length + converter.indexOf(char)
+    }
+    return num
+}
+
+function viewNumber(num) {
+    return (num + 1).toString()
+}
