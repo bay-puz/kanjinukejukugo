@@ -24,6 +24,7 @@ function setEditMode(params) {
 
     const inputList = params.has("t") ? decodeList(params.get("t")) : []
     setInput(inputList, row)
+    showAnalytics(inputList)
 
     const [problemList, answerList] = ListToProblem(inputList)
     show(problemList, row)
@@ -42,8 +43,10 @@ function setSolveMode(params) {
 function update() {
     const problemText = document.getElementById("inputText").value
     const row = document.getElementById("setRow").value
-    const [problemList, answerList] = ListToProblem(inputToList(problemText))
+    const inputList = inputToList(problemText)
+    const [problemList, answerList] = ListToProblem(inputList)
     show(problemList, Number(row))
+    showAnalytics(inputList)
 }
 
 function setInput(inputList, row) {
@@ -60,7 +63,6 @@ function show(problemList, row) {
 
     showBoard(problemList, row)
     showTable(tableLength, tableRow)
-    analytics(problemList)
 }
 
 function showBoard (problemList, row) {
