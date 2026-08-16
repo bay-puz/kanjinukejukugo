@@ -1,4 +1,6 @@
 document.getElementById("inputText").addEventListener("input", update)
+document.getElementById("boardRow").addEventListener("change", update);
+document.getElementById("tableRow").addEventListener("change", update);
 
 document.getElementById("showEditUrl").addEventListener("click", function(){showUrl(true, false)} );
 document.getElementById("showSolveUrl").addEventListener("click", function(){showUrl(false, false)} );
@@ -20,21 +22,19 @@ setProblem();
 
 function setEditMode(params) {
     setMode(true)
-    var row = params.has("r") ? Number(params.get("r")) : 4
 
     const inputList = params.has("t") ? decodeList(params.get("t")) : []
-    setInput(inputList, row)
+    setInput(inputList)
     showAnalytics(inputList)
 
     const [problemList, answerList] = ListToProblem(inputList)
-    show(problemList, row)
+    show(problemList)
 }
 
 function setSolveMode(params) {
     setMode(false)
-    var row = params.has("r") ? Number(params.get("r")) : 4
     const problemList = params.has("p") ? decodeProblem(params.get("p")) : []
-    show(problemList, row)
+    show(problemList)
     if (params.has("a")) {
         setAnswerCheck()
     }
@@ -42,26 +42,26 @@ function setSolveMode(params) {
 
 function update() {
     const problemText = document.getElementById("inputText").value
-    const row = document.getElementById("setRow").value
+    const boardRow = document.getElementById("boardRow").value
+    const tableRow = document.getElementById("tableRow").value
     const inputList = inputToList(problemText)
     const [problemList, answerList] = ListToProblem(inputList)
-    show(problemList, Number(row))
+    show(problemList, Number(boardRow), Number(tableRow))
     showAnalytics(inputList)
 }
 
-function setInput(inputList, row) {
+function setInput(inputList) {
     var inputElement = document.getElementById("inputText")
     inputElement.value = inputList.join('\n')
 }
 
-function show(problemList, row) {
+function show(problemList, boardRow = 4, tableRow = 30) {
     if (problemList.length === 0) {
         return
     }
     const tableLength = getTableLength(problemList)
-    const tableRow = 30
 
-    showBoard(problemList, row)
+    showBoard(problemList, boardRow)
     showTable(tableLength, tableRow)
 }
 
@@ -86,8 +86,6 @@ function showUrl(isEdit, isCheck) {
     }
 
     const text = document.getElementById("inputText").value
-    const row = document.getElementById("setRow").value
-
     const inputList = inputToList(text)
 
     if (isEdit) {
@@ -101,7 +99,6 @@ function showUrl(isEdit, isCheck) {
             params.append("a", encodeAnswer(answerList))
         }
     }
-    params.append("r", row)
 
     const url = new URL(location.href)
     url.search = params;

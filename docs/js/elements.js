@@ -1,13 +1,20 @@
 function createBoardElement(problemList, row) {
     const element = document.createElement("span")
+    var rowCount = 0
     for (const jukugo of problemList) {
         element.appendChild(createJukugoElement(jukugo))
+        rowCount += 1
+        if (rowCount % row === 0) {
+            const breakElement = document.createElement("span")
+            breakElement.innerHTML = "<br>"
+            element.appendChild(breakElement)
+        }
     }
     return element
 }
 
 function createJukugoElement(jukugo) {
-    const element = document.createElement("p")
+    const element = document.createElement("span")
     element.classList.add("jukugo")
     for (const char of jukugo) {
         if (typeof(char) === "number") {
