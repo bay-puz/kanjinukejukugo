@@ -1,10 +1,11 @@
 function inputToList(text) {
     var inputList = []
     for (line of text.split('\n')) {
-        if (line.startsWith('#')) {
+        line = line.trim()
+        if (line.length === 0 || line.startsWith('#')) {
             continue
         }
-        inputList.push(line.trim())
+        inputList.push(line)
     }
     return inputList
 }

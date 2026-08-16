@@ -1,14 +1,35 @@
 function showAnalytics(inputList) {
+    showSummarize(inputList)
+    showCount(inputList)
+    showHint(inputList)
+    showUsed(inputList)
+}
+
+function showSummarize(inputList) {
     var allKanji = inputList.join('')
     var countDict = {}
     for (const char of allKanji) {
         countDict[char] = (countDict[char] || 0) + 1
     }
 
-    showCount(inputList)
-    showUsed(inputList)
-}
+    var nukeKanji = []
+    var hintKanji = []
+    for (const [kanji, count] of Object.entries(countDict)) {
+        if (count == 1) {
+            hintKanji.push(kanji)
+        }
+        else {
+            nukeKanji.push(kanji)
+        }
+    }
 
+    var summarizeElement = document.getElementById("summarized")
+    summarizeElement.innerHTML = null
+
+    summarizeElement.innerHTML = "熟語：" + inputList.length + "語／文字：" + allKanji.length + "個"
+    summarizeElement.innerHTML += "<br>"
+    summarizeElement.innerHTML += "ヒント：" + hintKanji.length + "個／抜け漢字：" + nukeKanji.length + "種"
+}
 
 function showCount(inputList) {
     var allKanji = inputList.join('')
@@ -28,12 +49,39 @@ function showCount(inputList) {
     if (countKanji.length <= 0) {
         return
     }
-    var countElement = document.getElementById("countKanji")
+    var countElement = document.getElementById("count")
     countElement.innerHTML = null
     for (const [count, kanji] of Object.entries(countKanji)) {
-        const element = document.createElement("p")
+        const element = document.createElement("div")
         element.innerText = count + "回：" + kanji.join("、") + "（" + kanji.length + "個）"
         countElement.appendChild(element)
+    }
+}
+
+function showHint(inputList) {
+    var allKanji = inputList.join('')
+    var countDict = {}
+    for (const char of allKanji) {
+        countDict[char] = (countDict[char] || 0) + 1
+    }
+
+    var hintCount = {}
+    for (const jukugo of inputList) {
+        var hint = 0
+        for (const kanji of jukugo) {
+            if (countDict[kanji] === 1) {
+                hint += 1
+            }
+        }
+        hintCount[hint] = (hintCount[hint] || 0) + 1
+    }
+
+    var hintElement = document.getElementById("hint")
+    hintElement.innerHTML = null
+    for (const [num, count] of Object.entries(hintCount)) {
+        const element = document.createElement("div")
+        element.innerText = num + "ヒント：" + count + "語"
+        hintElement.appendChild(element)
     }
 }
 
@@ -108,21 +156,21 @@ function showUsed(inputList) {
     if (resultList.length === 0) {
         return
     }
-    var usedElement = document.getElementById("usedKanji")
+    var usedElement = document.getElementById("used")
     usedElement.innerHTML = null
     for (const msg of resultList) {
-        const element = document.createElement("p")
+        const element = document.createElement("div")
         element.innerText = msg
         usedElement.appendChild(element)
     }
 }
 
 function sameAlert(j1, j2) {
-    return j1 + "と" + j2 + "は抜けている漢字が同じ"
+    return j1 + "と" + j2 + "は抜け漢字が同じ"
 }
 
 function includedAlert(j1, j2) {
-    return j1 + "の抜けている漢字は" + j2 + "に含まれる"
+    return j1 + "の抜け漢字は" + j2 + "に含まれる"
 }
 
 function aloneAlert(k, j) {
