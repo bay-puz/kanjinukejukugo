@@ -1,6 +1,6 @@
 document.getElementById("inputText").addEventListener("input", update)
-document.getElementById("boardRow").addEventListener("change", update);
-document.getElementById("tableRow").addEventListener("change", update);
+document.getElementById("boardRow").addEventListener("change", updateSize);
+document.getElementById("tableRow").addEventListener("change", updateSize);
 
 document.getElementById("showEditUrl").addEventListener("click", function(){showUrl(true, false)} );
 document.getElementById("showSolveUrl").addEventListener("click", function(){showUrl(false, false)} );
@@ -11,33 +11,30 @@ document.getElementById("table").addEventListener("click", clickProblem);
 
 function setProblem() {
     var params = new URLSearchParams(document.location.search);
-    if (params.has("m") && params.get("m") != "edit" ) {
-        setSolveMode(params)
+    const isEdit = isEditMode(params)
+
+    setMode(isEdit)
+    var problemList = []
+    if (isEdit) {
+        const inputList = params.has("t") ? decodeList(params.get("t")) : []
+        setInput(inputList)
+        showAnalytics(inputList)
+        problemList = listToProblem(inputList)
     }
     else {
-        setEditMode(params)
+        if (params.has("a")) {
+            setAnswerCheck()
+        }
+        problemList = params.has("p") ? decodeProblem(params.get("p")) : []
     }
+    const boardRow = document.getElementById("boardRow").value
+    const tableRow = document.getElementById("tableRow").value
+    show(problemList, boardRow, tableRow)
 }
 setProblem();
 
-function setEditMode(params) {
-    setMode(true)
-
-    const inputList = params.has("t") ? decodeList(params.get("t")) : []
-    setInput(inputList)
-    showAnalytics(inputList)
-
-    const [problemList, answerList] = ListToProblem(inputList)
-    show(problemList)
-}
-
-function setSolveMode(params) {
-    setMode(false)
-    const problemList = params.has("p") ? decodeProblem(params.get("p")) : []
-    show(problemList)
-    if (params.has("a")) {
-        setAnswerCheck()
-    }
+function isEditMode(params) {
+    return (!params.has("m") || params.get("m") == "edit" )
 }
 
 function update() {
@@ -45,22 +42,32 @@ function update() {
     const boardRow = document.getElementById("boardRow").value
     const tableRow = document.getElementById("tableRow").value
     const inputList = inputToList(problemText)
-    const [problemList, answerList] = ListToProblem(inputList)
+    const problemList = listToProblem(inputList)
     show(problemList, Number(boardRow), Number(tableRow))
     showAnalytics(inputList)
 }
+
+function updateSize() {
+    var params = new URLSearchParams(document.location.search);
+    if (isEditMode(params)) {
+        update()
+    }
+    else {
+        setProblem()
+    }
+}
+
 
 function setInput(inputList) {
     var inputElement = document.getElementById("inputText")
     inputElement.value = inputList.join('\n')
 }
 
-function show(problemList, boardRow = 4, tableRow = 30) {
+function show(problemList, boardRow, tableRow) {
     if (problemList.length === 0) {
         return
     }
-    const tableLength = getTableLength(problemList)
-
+    const tableLength = culcTableLength(problemList)
     showBoard(problemList, boardRow)
     showTable(tableLength, tableRow)
 }
@@ -93,9 +100,10 @@ function showUrl(isEdit, isCheck) {
         params.append("t", encodeList(inputList))
     }
     else {
-        const [problemList, answerList] = ListToProblem(inputList)
+        const problemList = listToProblem(inputList)
         params.append("p", encodeProblem(problemList))
         if (isCheck) {
+            const answerList = listToAnswer(inputList)
             params.append("a", encodeAnswer(answerList))
         }
     }

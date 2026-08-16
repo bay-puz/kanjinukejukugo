@@ -6,11 +6,8 @@ function showAnalytics(inputList) {
 }
 
 function showSummarize(inputList) {
-    var allKanji = inputList.join('')
-    var countDict = {}
-    for (const char of allKanji) {
-        countDict[char] = (countDict[char] || 0) + 1
-    }
+    const allKanji = inputList.join('')
+    const countDict = makecountDict(inputList)
 
     var nukeKanji = []
     var hintKanji = []
@@ -32,11 +29,7 @@ function showSummarize(inputList) {
 }
 
 function showCount(inputList) {
-    var allKanji = inputList.join('')
-    var countDict = {}
-    for (const char of allKanji) {
-        countDict[char] = (countDict[char] || 0) + 1
-    }
+    const countDict = makecountDict(inputList)
 
     var countKanji = {}
     for (const [kanji, count] of Object.entries(countDict)) {
@@ -53,17 +46,13 @@ function showCount(inputList) {
     countElement.innerHTML = null
     for (const [count, kanji] of Object.entries(countKanji)) {
         const element = document.createElement("div")
-        element.innerText = count + "回：" + kanji.join("、") + "（" + kanji.length + "個）"
+        element.innerText = count + "回：" + kanji.join("、") + "（" + kanji.length + "種）"
         countElement.appendChild(element)
     }
 }
 
 function showHint(inputList) {
-    var allKanji = inputList.join('')
-    var countDict = {}
-    for (const char of allKanji) {
-        countDict[char] = (countDict[char] || 0) + 1
-    }
+    const countDict = makecountDict(inputList)
 
     var hintCount = {}
     for (const jukugo of inputList) {
@@ -86,25 +75,21 @@ function showHint(inputList) {
 }
 
 function showUsed(inputList) {
-    var allKanji = inputList.join('')
-    var countDict = {}
-    for (const char of allKanji) {
-        countDict[char] = (countDict[char] || 0) + 1
-    }
+    const countDict = makecountDict(inputList)
 
     var nukeSet = new Set()
-    for (const char of allKanji) {
-        if (countDict[char] > 1) {
-            nukeSet.add(char)
+    for (const [kanji, count] of Object.entries(countDict)) {
+        if (count > 1) {
+            nukeSet.add(kanji)
         }
     }
 
     var jukugoNuke = []
-    for (const line of inputList) {
+    for (const jukugo of inputList) {
         var nukeKanji = new Set()
-        for (const char of line) {
-            if (nukeSet.has(char)) {
-                nukeKanji.add(char)
+        for (const kanji of jukugo) {
+            if (nukeSet.has(kanji)) {
+                nukeKanji.add(kanji)
             }
         }
         jukugoNuke.push(nukeKanji)
