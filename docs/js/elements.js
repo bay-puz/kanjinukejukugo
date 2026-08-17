@@ -115,3 +115,10 @@ function getNukeClassNumber(className) {
     }
     return -1
 }
+
+function getInputIdNumber(id) {
+    if (id.startsWith("input")) {
+        return Number(id.substring(5))
+    }
+    return -1
+}

@@ -1,15 +1,3 @@
-function inputToList(text) {
-    var inputList = []
-    for (line of text.split('\n')) {
-        line = line.trim()
-        if (line.length === 0 || line.startsWith('#')) {
-            continue
-        }
-        inputList.push(line)
-    }
-    return inputList
-}
-
 function listToProblem(inputList) {
     const countDict = makecountDict(inputList)
     const answerList = listToAnswer(inputList)

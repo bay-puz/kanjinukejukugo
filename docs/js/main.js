@@ -1,6 +1,6 @@
 document.getElementById("inputText").addEventListener("input", update)
-document.getElementById("boardRow").addEventListener("change", updateSize);
-document.getElementById("tableRow").addEventListener("change", updateSize);
+document.getElementById("boardRow").addEventListener("change", update);
+document.getElementById("tableRow").addEventListener("change", update);
 
 document.getElementById("showEditUrl").addEventListener("click", function(){showUrl(true, false)} );
 document.getElementById("showSolveUrl").addEventListener("click", function(){showUrl(false, false)} );
@@ -9,97 +9,69 @@ document.getElementById("showSolveCheckUrl").addEventListener("click", function(
 document.getElementById("board").addEventListener("click", clickProblem);
 document.getElementById("table").addEventListener("click", clickProblem);
 
-function setProblem() {
-    var params = new URLSearchParams(document.location.search);
-    const isEdit = isEditMode(params)
+function show() {
+    const isEdit = isEditMode()
 
-    setMode(isEdit)
     var problemList = []
     if (isEdit) {
+        const params = new URLSearchParams(document.location.search);
         const inputList = params.has("t") ? decodeList(params.get("t")) : []
-        setInput(inputList)
-        showAnalytics(inputList)
-        problemList = listToProblem(inputList)
+        showEditMode(inputList)
     }
     else {
-        if (params.has("a")) {
-            setAnswerCheck()
-        }
-        problemList = params.has("p") ? decodeProblem(params.get("p")) : []
+        showSolveMode()
     }
-    const boardRow = document.getElementById("boardRow").value
-    const tableRow = document.getElementById("tableRow").value
-    show(problemList, boardRow, tableRow)
 }
-setProblem();
+show();
 
-function isEditMode(params) {
-    return (!params.has("m") || params.get("m") == "edit" )
+function showEditMode(inputList) {
+    setMode(true)
+    setInput(inputList)
+    showAnalytics(inputList)
+    showProblem(listToProblem(inputList))
+}
+
+function showSolveMode() {
+    setMode(false)
+    const params = new URLSearchParams(document.location.search);
+    const problemList = params.has("p") ? decodeList(params.get("p")) : []
+    showProblem(problemList)
+    if(params.has("a")) {
+        setAnswerCheck()
+    }
 }
 
 function update() {
-    const problemText = document.getElementById("inputText").value
-    const boardRow = document.getElementById("boardRow").value
-    const tableRow = document.getElementById("tableRow").value
-    const inputList = inputToList(problemText)
-    const problemList = listToProblem(inputList)
-    show(problemList, Number(boardRow), Number(tableRow))
-    showAnalytics(inputList)
-}
-
-function updateSize() {
-    var params = new URLSearchParams(document.location.search);
-    if (isEditMode(params)) {
-        update()
+    const written = getWrittenChars()
+    if (isEditMode()) {
+        setEditMode(getInputList())
     }
     else {
-        setProblem()
+        setSolveMode()
     }
+    setWrittenChars(written)
 }
 
-
-function setInput(inputList) {
-    var inputElement = document.getElementById("inputText")
-    inputElement.value = inputList.join('\n')
-}
-
-function show(problemList, boardRow, tableRow) {
+function showProblem(problemList) {
     if (problemList.length === 0) {
         return
     }
+    const [boardRow, tableRow] = getRows()
     const tableLength = culcTableLength(problemList)
-    showBoard(problemList, boardRow)
-    showTable(tableLength, tableRow)
-}
-
-function showBoard (problemList, row) {
-    var problemElement = document.getElementById("board")
-    problemElement.innerHTML = null
-    problemElement.appendChild(createBoardElement(problemList, row))
-}
-
-function showTable (tableLength, tableRow) {
-    var answerElement = document.getElementById("table")
-    answerElement.innerHTML = null
-    answerElement.appendChild(createTableElement(tableLength, tableRow))
+    setBoard(problemList, boardRow)
+    setTable(tableLength, tableRow)
 }
 
 function showUrl(isEdit, isCheck) {
     var params = new URLSearchParams();
+    const inputList = getInputList()
+
     if (isEdit) {
         params.append("m", "edit")
-    } else {
-        params.append("m", "solve")
-    }
-
-    const text = document.getElementById("inputText").value
-    const inputList = inputToList(text)
-
-    if (isEdit) {
-        const inputList = inputToList(text)
         params.append("t", encodeList(inputList))
     }
     else {
+        params.append("m", "solve")
         const problemList = listToProblem(inputList)
         params.append("p", encodeProblem(problemList))
         if (isCheck) {
@@ -110,25 +82,7 @@ function showUrl(isEdit, isCheck) {
 
     const url = new URL(location.href)
     url.search = params;
-    var urlElement = document.getElementById("showURL")
-    urlElement.href = url
-    urlElement.innerText = url.toString()
-    var lineElement = document.getElementById("URLLine")
-    lineElement.classList.remove("hidden")
-}
-
-function setMode(isEdit) {
-    const hiddenClass = (isEdit) ? "displaySolveMode" : "displayEditMode"
-    var elements = document.getElementsByClassName(hiddenClass);
-    for (const element of elements) {
-        element.classList.add("hidden")
-    }
-}
-
-function setAnswerCheck() {
-    var answerCheckErea = document.getElementById("answerCheckErea")
-    answerCheckErea.classList.remove("hidden")
-    document.getElementById("checkAnswer").addEventListener("click", function(){checkAnswer()} );
+    setUrl(url)
 }
 
 function checkAnswer() {
