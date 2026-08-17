@@ -17,6 +17,7 @@ function show() {
         const params = new URLSearchParams(document.location.search);
         const inputList = params.has("t") ? decodeList(params.get("t")) : []
         showEditMode(inputList)
+        setInput(inputList)
     }
     else {
         showSolveMode()
@@ -26,7 +27,6 @@ show();
 
 function showEditMode(inputList) {
     setMode(true)
-    setInput(inputList)
     showAnalytics(inputList)
     showProblem(listToProblem(inputList))
 }
@@ -34,7 +34,7 @@ function showEditMode(inputList) {
 function showSolveMode() {
     setMode(false)
     const params = new URLSearchParams(document.location.search);
-    const problemList = params.has("p") ? decodeList(params.get("p")) : []
+    const problemList = params.has("p") ? decodeProblem(params.get("p")) : []
     showProblem(problemList)
     if(params.has("a")) {
         setAnswerCheck()
@@ -44,10 +44,10 @@ function showSolveMode() {
 function update() {
     const written = getWrittenChars()
     if (isEditMode()) {
-        setEditMode(getInputList())
+        showEditMode(getInputList())
     }
     else {
-        setSolveMode()
+        showSolveMode()
     }
     setWrittenChars(written)
 }

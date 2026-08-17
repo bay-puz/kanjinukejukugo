@@ -21,7 +21,7 @@ function getRows() {
     const boardRow = document.getElementById("boardRow").value
     const tableRow = document.getElementById("tableRow").value
 
-    return [Number[boardRow], Number[tableRow]]
+    return [Number(boardRow), Number(tableRow)]
 }
 
 function setMode(isEdit) {
@@ -98,6 +98,9 @@ function setWrittenChars(writtenDict) {
     for (const [n, char] of Object.entries(writtenDict)) {
         const num = Number(n)
         const element = document.getElementById(getCharInputId(num))
+        if (!element) {
+            continue
+        }
         element.value = char
         writeBoard(num, char)
     }
