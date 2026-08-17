@@ -27,7 +27,7 @@
                 <label for="setRow" class="settingLabel">１行の熟語数</label>
                 <input type="number" id="boardRow" min="1" value="4">
                 <label for="setRow" class="settingLabel">解答表の幅</label>
-                <input type="number" id="tableRow" min="4" value="30">
+                <input type="number" id="tableRow" min="3" value="30">
             </p>
         </div>
         <div class="inputErea displayEditMode">
@@ -38,23 +38,14 @@
         <br>
         <div id="analyticsErea" class="displayEditMode">
             <details>
-                <summary>全体の情報</summary>
-                <div id="summarized">なし</div>
-            </details>
-            <details>
-                <summary>漢字の使用数</summary>
-                <div id="count">なし</div>
-            </details>
-            <details>
-                <summary>熟語のヒント数</summary>
-                <div id="hint">なし</div>
-            </details>
-            <details>
-                <summary>抜けている漢字の使われ方</summary>
-                <div id="used">なし</div>
+                <summary>統計情報</summary>
+                <p>全体<div id="summarized" class="info"></div></p>
+                <p>漢字の使用数<div id="count" class="info"></div></p>
+                <p>熟語のヒント数<div id="hint" class="info"></div></p>
+                <p>抜けている漢字の使われ方<div id="used" class="info">問題なし</div></p>
             </details>
         </div>
-        <div id="displayErea">
+        <div id="problem">
             <p id="board"></p>
             <p id="table"></p>
         </div>

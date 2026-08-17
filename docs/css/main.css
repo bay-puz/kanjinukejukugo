@@ -10,28 +10,6 @@ button {
     cursor: pointer;
 }
 
-table {
-    margin: auto;
-    border: solid;
-}
-
-thead {
-    border-bottom: solid;
-}
-
-td {
-    width: 2em;
-    text-align: center;
-}
-
-th, td {
-    height: 2em;
-    cursor: default;
-    user-select: none;
-    font-size: auto;
-    font-weight: normal;
-}
-
 a {
     text-decoration: none;
     color: black;
@@ -43,6 +21,10 @@ a:hover {
 
 footer {
     text-align: end;
+}
+
+.hidden {
+    display: none;
 }
 
 .settingErea {
@@ -70,8 +52,9 @@ footer {
     width: 10em;
 }
 
-.hidden {
-    display: none;
+.info {
+    text-align: center;
+    font-size: small;
 }
 
 #board .jukugo {
@@ -81,16 +64,18 @@ footer {
     margin-left: 2em;
 }
 
-#board .nukeKanji {
+#board ruby {
     ruby-position: under;
+    ruby-align: center;
 }
 
-#board .nukeKanji rt {
+#board rt {
     font-size: x-small;
     letter-spacing: 0em;
 }
 
 #table table {
+    border: solid;
     border-collapse: collapse;
     margin-left: auto;
     margin-right: auto;
@@ -98,12 +83,12 @@ footer {
 
 #table th{
     font-size: small;
+    border: thin solid;
 }
 
 #table td{
-    border: 1px solid;
-    min-width: 1.5em;
-    max-width: 1.5em;
+    border: thin solid;
+    width: 1.5em;
     height: 1.5em;
 }
 

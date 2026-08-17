@@ -1,13 +1,5 @@
 function encodeList(inputList) {
-    var codeList = []
-    for (const line of inputList) {
-        var lineCodes = []
-        for (const char of line) {
-            lineCodes.push(encodeKanji(char))
-        }
-        codeList.push(lineCodes.join('-'))
-    }
-    return codeList.join('_')
+    return inputList.join('_')
 }
 
 function encodeProblem(problemList) {
@@ -35,18 +27,7 @@ function encodeAnswer(answerList) {
 }
 
 function decodeList(code) {
-    if (code.length === 0) {
-        return []
-    }
-    var inputList = []
-    for (const lineCode of code.split('_')) {
-        var line = []
-        for (const charCode of lineCode.split('-')) {
-            line.push(decodeKanji(charCode))
-        }
-        inputList.push(line.join(''))
-    }
-    return inputList
+    return code.split('_')
 }
 
 function decodeProblem(code) {

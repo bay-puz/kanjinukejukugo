@@ -6,8 +6,7 @@ document.getElementById("showEditUrl").addEventListener("click", function(){show
 document.getElementById("showSolveUrl").addEventListener("click", function(){showUrl(false, false)} );
 document.getElementById("showSolveCheckUrl").addEventListener("click", function(){showUrl(false, true)} );
 
-document.getElementById("board").addEventListener("click", clickProblem);
-document.getElementById("table").addEventListener("click", clickProblem);
+document.getElementById("problem").addEventListener("click", clickProblem);
 
 function show() {
     const isEdit = isEditMode()
@@ -87,13 +86,15 @@ function showUrl(isEdit, isCheck) {
 
 function checkAnswer() {
     const answerList = decodeAnswer(new URLSearchParams(document.location.search).get("a"))
-    var solveList = []
-    document.querySelectorAll(".charInput").forEach(function(inputElement) {
-        solveList.push(inputElement.value)
-    });
+    var writtenDict = getWrittenChars()
+    if (Object.keys(writtenDict).length < answerList.length) {
+        alert("未完成です。")
+        return
+    }
+
     var isCorrect = true
-    for (let i = 0; i < answerList.length; i++) {
-        if (solveList[i] !== answerList[i]) {
+    for (const [num, write] of Object.entries(writtenDict)) {
+        if (write != answerList[num]) {
             isCorrect = false
             break
         }

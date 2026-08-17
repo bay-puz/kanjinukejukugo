@@ -88,7 +88,7 @@ function getWrittenChars() {
         if (char.length < 1) {
             continue
         }
-        const number = getInputIdNumber(inputELement.id)
+        const number = getCharInputNumber(inputELement.id)
         writtenDict[number] = char
     }
     return writtenDict
@@ -109,35 +109,31 @@ function setWrittenChars(writtenDict) {
 function highlightElement(element) {
     if(element === null) return
     clearHighlight()
-    var number = -1
-    if(element.id.startsWith("table")) {
-        number = Number(element.id.substring(5))
-    }
-    else if(element.id.startsWith("input")) {
-        number = Number(element.id.substring(5))
-    }
-    else {
-        for(const elementClass of element.classList){
-            const getNumber = getNukeClassNumber(elementClass)
-            if (getNumber >= 0) {
-                number = getNumber
-            }
-        }
-    }
+    const number = getNumberOfElement(element)
     if(number >= 0) {
         highlight(number)
     }
 }
 
 function highlight(number) {
-    var elements = document.getElementsByClassName(getNukeClass(number))
-    for (var element of elements) {
-        element.classList.add("highlight")
+    var nukeElements = document.getElementsByClassName(getNukeClass(number))
+    for (var nukeElement of nukeElements) {
+        nukeElement.classList.add("highlight")
     }
-    if (document.getElementById(getTableId(number)) !== null) {
-        document.getElementById(getTableId(number)).classList.add("highlight")
-        document.getElementById(getCharInputId(number)).focus()
+    var rubyElements = document.getElementsByClassName(getRubyClass(number))
+    for (var rubyElement of rubyElements) {
+        rubyElement.classList.add("highlight")
     }
+
+    var tableElement = document.getElementById(getTableHeadId(number))
+    if (tableElement !== null) {
+        tableElement.classList.add("highlight")
+    }
+    var inputElement = document.getElementById(getCharInputId(number))
+    if (inputElement !== null) {
+        inputElement.focus()
+    }
+
 }
 
 function clearHighlight() {

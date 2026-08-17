@@ -40,6 +40,7 @@ function createNukeKanjiElement(number, kanji = "＿") {
 
     var rtElement = document.createElement("rt")
     rtElement.innerText = viewNumber(number)
+    rtElement.classList.add(getRubyClass(number))
     element.appendChild(rtElement)
 
     return element
@@ -70,7 +71,7 @@ function createTableHeadElement(start, end){
     for (let number = start; number < end; number++) {
         var thElement = document.createElement("th")
         thElement.innerText = viewNumber(number)
-        thElement.id = getTableId(number)
+        thElement.id = getTableHeadId(number)
         headElement.appendChild(thElement)
     }
     headElement.addEventListener("click", clickProblem)
@@ -88,9 +89,8 @@ function createTableBodyElement(start, end) {
 }
 
 function createInputCharElement(number) {
-    const elementId = getCharInputId(number)
     var inputElement = document.createElement("input")
-    inputElement.id = elementId
+    inputElement.id = getCharInputId(number)
     inputElement.classList.add("charInput")
     inputElement.addEventListener("change", function(){writeChar(number)})
     inputElement.addEventListener("focusin", function(){clearHighlight(); highlight(number)})
@@ -101,7 +101,11 @@ function getNukeClass(number) {
     return "nuke" + String(number)
 }
 
-function getTableId(number) {
+function getRubyClass(number) {
+    return "ruby" + String(number)
+}
+
+function getTableHeadId(number) {
     return "table" + String(number)
 }
 
@@ -109,15 +113,54 @@ function getCharInputId(number) {
     return "input" + String(number)
 }
 
-function getNukeClassNumber(className) {
-    if(className.startsWith("nuke")) {
-        return Number(className.substring(4))
+function getNumberOfElement(element){
+    if (!element) {
+        return -1
+    }
+    const id = element.id
+    if (getTableHeadNumber(id) >= 0 ) {
+        return getTableHeadNumber(id)
+    }
+    if (getCharInputNumber(id) >= 0 ) {
+        return getCharInputNumber(id)
+    }
+    const classList = element.classList
+    if (getNukeNumber(classList) >= 0) {
+        return getNukeNumber(classList)
+    }
+    if (getRubyNumber(classList) >= 0) {
+        return getRubyNumber(classList)
     }
     return -1
 }
 
-function getInputIdNumber(id) {
+function getNukeNumber(classList) {
+    for (const className of classList) {
+        if(className.startsWith("nuke")) {
+            return Number(className.substring(4))
+        }
+    }
+    return -1
+}
+
+function getRubyNumber(classList) {
+    for (const className of classList) {
+        if(className.startsWith("ruby")) {
+            return Number(className.substring(4))
+        }
+    }
+    return -1
+}
+
+function getCharInputNumber(id) {
     if (id.startsWith("input")) {
+        return Number(id.substring(5))
+    }
+    return -1
+}
+
+function getTableHeadNumber(id) {
+    if (id.startsWith("table")) {
         return Number(id.substring(5))
     }
     return -1
