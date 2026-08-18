@@ -58,10 +58,10 @@ footer {
 }
 
 #board .jukugo {
-    letter-spacing: 0.5em;
+    letter-spacing: 0.7em;
     line-height: 2.5em;
-    text-align: center;
-    margin-left: 2em;
+    margin-left: 1em;
+    margin-right: 1em;
 }
 
 #board ruby {
@@ -72,6 +72,7 @@ footer {
 #board rt {
     font-size: x-small;
     letter-spacing: 0em;
+    margin-right: 0.7em;
 }
 
 #table table {

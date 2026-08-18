@@ -63,21 +63,30 @@ function setAnswerCheck() {
     document.getElementById("checkAnswer").addEventListener("click", function(){checkAnswer()} );
 }
 
-function writeChar(num) {
+function inputFromTable(num) {
     const inputElement = document.getElementById(getCharInputId(num))
     const inputChar = inputElement.value
-    writeBoard(num, inputChar)
-}
-
-function writeBoard(num, char) {
-    if (char.length != 1) {
+    if (inputChar.length > 1) {
         return
     }
+    if (inputChar.length === 0) {
+        deleteChar(num)
+    }
+    else {
+        writeChar(num, inputChar)
+    }
+}
+
+function writeChar(num, char) {
     var charElements = document.getElementsByClassName(getNukeClass(num))
     for (var charElement of charElements) {
         const newElement = createNukeKanjiElement(num, char)
         charElement.replaceWith(newElement)
     }
+}
+
+function deleteChar(num) {
+    writeChar(num, defaultChar())
 }
 
 function getWrittenChars() {

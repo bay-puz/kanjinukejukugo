@@ -1,5 +1,5 @@
 function encodeList(inputList) {
-    return inputList.join('_')
+    return inputList.join('-')
 }
 
 function encodeProblem(problemList) {
@@ -13,9 +13,9 @@ function encodeProblem(problemList) {
                 jukugoCodes.push(encodeKanji(char))
             }
         }
-        codeList.push(jukugoCodes.join('-'))
+        codeList.push(jukugoCodes.join('_'))
     }
-    return codeList.join('_')
+    return codeList.join('-')
 }
 
 function encodeAnswer(answerList) {
@@ -23,11 +23,11 @@ function encodeAnswer(answerList) {
     for (const char of answerList) {
         codeList.push(encodeKanji(char))
     }
-    return codeList.join('_')
+    return codeList.join('-')
 }
 
 function decodeList(code) {
-    return code.split('_')
+    return code.split('-')
 }
 
 function decodeProblem(code) {
@@ -35,9 +35,9 @@ function decodeProblem(code) {
         return []
     }
     var problemList = []
-    for (const jukugoCode of code.split('_')) {
+    for (const jukugoCode of code.split('-')) {
         var jukugo = []
-        for (const charCode of jukugoCode.split('-')) {
+        for (const charCode of jukugoCode.split('_')) {
             if (parseInt(charCode) || parseInt(charCode) === 0) {
                 jukugo.push(decodeNumber(charCode))
             } else {
@@ -54,7 +54,7 @@ function decodeAnswer(code) {
         return []
     }
     var answerList = []
-    for (const charCode of code.split('_')) {
+    for (const charCode of code.split('-')) {
         answerList.push(decodeKanji(charCode))
     }
     return answerList
@@ -97,8 +97,4 @@ function decoder(code) {
         codePoint = codePoint * converter.length + converter.indexOf(char)
     }
     return codePoint
-}
-
-function viewNumber(num) {
-    return (num + 1).toString()
 }
