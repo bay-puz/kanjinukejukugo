@@ -1,6 +1,6 @@
-function listToProblem(inputList) {
+function makeProblemList(inputList, baseList = []) {
     const countDict = makecountDict(inputList)
-    const answerList = listToAnswer(inputList)
+    const answerList = makeAnswerList(inputList, baseList)
 
     var problemList = []
     for (const line of inputList) {
@@ -19,13 +19,34 @@ function listToProblem(inputList) {
     return problemList
 }
 
-function listToAnswer(inputList) {
+function makeAnswerList(inputList, baseList = []) {
     const countDict = makecountDict(inputList)
 
     var answerList = []
+    for (const kanji of baseList) {
+        if (countDict[kanji] > 1) {
+            answerList.push(kanji)
+        }
+    }
+
     for (const [kanji, count] of Object.entries(countDict)) {
         if (count > 1 && !answerList.includes(kanji)) {
             answerList.push(kanji)
+        }
+    }
+    return answerList
+}
+
+function sortAnswerList(anserwList, order) {
+    if (order === "reverse") {
+        answerList.reverse()
+    }
+    else if (order === "random") {
+        for (var i = answerList.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1))
+            const temp = answerList[i]
+            answerList[i] = answerList[j]
+            answerList[j] = temp
         }
     }
     return answerList

@@ -24,6 +24,10 @@ function getRows() {
     return [Number(boardRow), Number(tableRow)]
 }
 
+function getOrder() {
+    return document.querySelectorAll('input[name="order"]:checked')
+}
+
 function setMode(isEdit) {
     const hiddenClass = (isEdit) ? "displaySolveMode" : "displayEditMode"
     var elements = document.getElementsByClassName(hiddenClass);
@@ -60,7 +64,36 @@ function setUrl (url) {
 function setAnswerCheck() {
     var answerCheckErea = document.getElementById("answerCheckErea")
     answerCheckErea.classList.remove("hidden")
-    document.getElementById("checkAnswer").addEventListener("click", function(){checkAnswer()} );
+}
+
+function setAnswerList(answerList) {
+    for (const [num, kanji] of answerList.entries()) {
+        const element = document.getElementById(getTableHeadId(num))
+        if (!element) {
+            continue;
+        }
+        var answerElement = document.createElement("span")
+        answerElement.id = getAnswerId(num)
+        answerElement.innerText = kanji
+        answerElement.classList.add("hidden")
+        answerElement.classList.add("answer")
+        element.appendChild(answerElement)
+    }
+}
+
+function getAnswerList() {
+    var answerDict = {}
+    const answerElements = document.getElementsByClassName("answer")
+    for (const element of answerElements) {
+        num = getAnswerNumber(element.id)
+        kanji = element.innerText
+        answerDict[num] = kanji
+    }
+    var answerList = []
+    for (let num = 0; num < Object.keys(answerDict).length; num++) {
+        answerList.push(answerDict[num])
+    }
+    return answerList
 }
 
 function inputFromTable(num) {
@@ -111,7 +144,7 @@ function setWrittenChars(writtenDict) {
             continue
         }
         element.value = char
-        writeBoard(num, char)
+        writeChar(num, char)
     }
 }
 

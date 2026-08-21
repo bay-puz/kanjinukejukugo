@@ -121,6 +121,10 @@ function getCharInputId(number) {
     return "input" + String(number)
 }
 
+function getAnswerId(number) {
+    return "answer" + String(number)
+}
+
 function getNumberOfElement(element){
     if (!element) {
         return -1
@@ -170,6 +174,13 @@ function getCharInputNumber(id) {
 function getTableHeadNumber(id) {
     if (id.startsWith("table")) {
         return Number(id.substring(5))
+    }
+    return -1
+}
+
+function getAnswerNumber(id) {
+    if (id.startsWith("answer")) {
+        return Number(id.substring(6))
     }
     return -1
 }

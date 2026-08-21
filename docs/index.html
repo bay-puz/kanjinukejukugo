@@ -23,6 +23,19 @@
                 </p>
                 <p id="URLLine" class="hidden"><a href id="showURL" target="_blank"></a></p>
             </details>
+            <details class=" displayEditMode">
+                <summary class="settingLabel">
+                    番号の付け方
+                </summary>
+                <p>
+                    <input type="radio" id="orderForward" name="order" value="forward" checked />
+                    <label for="orderForward">出現順</label>
+                    <input type="radio" id="orderBackward" name="order" value="backward" />
+                    <label for="orderBackward">逆順</label>
+                    <input type="radio" id="orderRandom" name="order" value="random" />
+                    <label for="orderRandom">ランダム</label>
+                </p>
+            </details>
             <p id="settingSize">
                 <label for="setRow" class="settingLabel">１行の熟語数</label>
                 <input type="number" id="boardRow" min="1" value="4">
