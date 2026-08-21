@@ -37,21 +37,6 @@ function makeAnswerList(inputList, baseList = []) {
     return answerList
 }
 
-function sortAnswerList(anserwList, order) {
-    if (order === "reverse") {
-        answerList.reverse()
-    }
-    else if (order === "random") {
-        for (var i = answerList.length - 1; i > 0; i--) {
-            var j = Math.floor(Math.random() * (i + 1))
-            const temp = answerList[i]
-            answerList[i] = answerList[j]
-            answerList[j] = temp
-        }
-    }
-    return answerList
-}
-
 function makecountDict(inputList) {
     const allKanji = inputList.join('')
     var countDict = {}

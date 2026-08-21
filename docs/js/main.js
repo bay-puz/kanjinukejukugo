@@ -6,6 +6,11 @@ document.getElementById("showEditUrl").addEventListener("click", function(){show
 document.getElementById("showSolveUrl").addEventListener("click", function(){showUrl(false, false)});
 document.getElementById("showSolveCheckUrl").addEventListener("click", function(){showUrl(false, true)});
 
+document.getElementById("orderForward").addEventListener("click", function(){changeOrder("forward")});
+document.getElementById("orderBackward").addEventListener("click", function(){changeOrder("backward")});
+document.getElementById("orderRandom").addEventListener("click", function(){changeOrder("random")});
+
+
 document.getElementById("problem").addEventListener("click", clickProblem);
 
 document.getElementById("checkAnswer").addEventListener("click", checkAnswer);
@@ -91,6 +96,42 @@ function showUrl(isEdit, isCheck) {
     const url = new URL(location.href)
     url.search = params;
     setUrl(url)
+}
+
+function changeOrder(order) {
+    var answerList = getAnswerList()
+    const inputList = getInputList()
+    const writtenDict = getWrittenChars()
+
+    var writtenAnserDict = {}
+    for (const [num, kanji] of Object.entries(writtenDict)) {
+        const answerKanji = answerList[num]
+        writtenAnserDict[answerKanji] = kanji
+    }
+
+    if (order === "forward") {
+        answerList = makeAnswerList(inputList)
+    }
+    else if (order === "backward") {
+        var reverseInputList = inputList.toReversed()
+        answerList = makeAnswerList(reverseInputList)
+    }
+    else if (order === "random") {
+        for (var i = answerList.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1))
+            const temp = answerList[i]
+            answerList[i] = answerList[j]
+            answerList[j] = temp
+        }
+    }
+    showEditMode(inputList, answerList)
+
+    var newWrittenDict = {}
+    for (const [answerKanji, writtenKanji] of Object.entries(writtenAnserDict)) {
+        const num = answerList.indexOf(answerKanji)
+        newWrittenDict[num] = writtenKanji
+    }
+    setWrittenChars(newWrittenDict)
 }
 
 function clickProblem(event) {
