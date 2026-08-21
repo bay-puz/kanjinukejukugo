@@ -7,7 +7,7 @@ function getInputList() {
     const text = document.getElementById("inputText").value
 
     var inputList = []
-    for (line of text.split('\n')) {
+    for (line of text.split(/\s/)) {
         line = line.trim()
         if (line.length === 0 || line.startsWith('#')) {
             continue
@@ -37,8 +37,12 @@ function setMode(isEdit) {
 }
 
 function setInput(inputList) {
+    var row = []
+    for(let i=0; i<inputList.length; i+=4) {
+        row.push(inputList.slice(i, i+4).join(" "))
+    }
     var inputElement = document.getElementById("inputText")
-    inputElement.value = inputList.join('\n')
+    inputElement.value = row.join('\n')
 }
 
 function setBoard (problemList, row) {
