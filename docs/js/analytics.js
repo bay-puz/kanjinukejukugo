@@ -6,7 +6,7 @@ function showAnalytics(inputList) {
 }
 
 function showSummarize(inputList) {
-    const allKanji = inputList.join('')
+    const allKanji = makeAllKanji(inputList)
     const countDict = makecountDict(inputList)
 
     var nukeKanji = []
@@ -33,10 +33,10 @@ function showCount(inputList) {
 
     var countKanji = {}
     for (const [kanji, count] of Object.entries(countDict)) {
-        if ( countKanji[count] === undefined ) {
+        if (countKanji[count] === undefined) {
             countKanji[count] = []
         }
-        countKanji[count].push(kanji)
+        countKanji[count].push(viewChar(kanji))
     }
 
     if (countKanji.length <= 0) {
@@ -95,8 +95,6 @@ function showUsed(inputList) {
         jukugoNuke.push(nukeKanji)
     }
     var resultList = []
-    var includedJukugo = []
-    var sameJukugo = []
     for (const [i, nuke1] of jukugoNuke.entries()) {
         if (nuke1.size === 0) {
             continue
@@ -151,13 +149,13 @@ function showUsed(inputList) {
 }
 
 function sameAlert(j1, j2) {
-    return j1 + "と" + j2 + "は抜け漢字が同じ"
+    return viewJukugo(j1) + "と" + viewJukugo(j2) + "は抜け漢字が同じ"
 }
 
 function includedAlert(j1, j2) {
-    return j1 + "の抜け漢字は" + j2 + "に含まれる"
+    return viewJukugo(j1) + "の抜け漢字は" + viewJukugo(j2) + "に含まれる"
 }
 
 function aloneAlert(k, j) {
-    return "「" + k + "」は" + j + "でしか使われていない"
+    return "「" + viewChar(k) + "」は" + viewJukugo(j) + "でしか使われていない"
 }

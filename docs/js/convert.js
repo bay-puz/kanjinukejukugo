@@ -1,6 +1,5 @@
-function makeProblemList(inputList, baseList = []) {
+function makeProblemList(inputList, answerList) {
     const countDict = makecountDict(inputList)
-    const answerList = makeAnswerList(inputList, baseList)
 
     var problemList = []
     for (const line of inputList) {
@@ -24,21 +23,33 @@ function makeAnswerList(inputList, baseList = []) {
 
     var answerList = []
     for (const kanji of baseList) {
-        if (countDict[kanji] > 1) {
-            answerList.push(kanji)
+        const char = (Number(kanji) >= 0)? Number(kanji): kanji
+        if (countDict[char] > 1) {
+            answerList.push(char)
         }
     }
 
     for (const [kanji, count] of Object.entries(countDict)) {
-        if (count > 1 && !answerList.includes(kanji)) {
-            answerList.push(kanji)
+        const char = (Number(kanji) >= 0)? Number(kanji): kanji
+        if (count > 1 && !answerList.includes(char)) {
+            answerList.push(char)
         }
     }
     return answerList
 }
 
+function makeAllKanji(inputList) {
+    var allKanji = []
+    for (const jukugo of inputList) {
+        for (const kanji of jukugo) {
+            allKanji.push(kanji)
+        }
+    }
+    return allKanji
+}
+
 function makecountDict(inputList) {
-    const allKanji = inputList.join('')
+    const allKanji = makeAllKanji(inputList)
     var countDict = {}
     for (const char of allKanji) {
         countDict[char] = (countDict[char] || 0) + 1

@@ -12,9 +12,25 @@ function getInputList() {
         if (line.length === 0 || line.startsWith('#')) {
             continue
         }
-        inputList.push(line)
+        inputList.push(normalizeJukugo(line))
     }
     return inputList
+}
+
+function normalizeJukugo(line) {
+    var jukugo = []
+    for (let i=0; i<line.length; i++) {
+        const char = line.substring(i, i+1)
+        if (Number(char) >= 0) {
+            const num = Number(line.substring(i, i+2)) -1
+            i++
+            jukugo.push(num)
+        }
+        else {
+            jukugo.push(char)
+        }
+    }
+    return jukugo
 }
 
 function getRows() {
@@ -37,12 +53,40 @@ function setMode(isEdit) {
 }
 
 function setInput(inputList) {
+    var viewList = makeViewList(inputList)
     var row = []
-    for(let i=0; i<inputList.length; i+=4) {
-        row.push(inputList.slice(i, i+4).join(" "))
+    for(let i=0; i<viewList.length; i+=4) {
+        row.push(viewList.slice(i, i+4).join(" "))
     }
     var inputElement = document.getElementById("inputText")
     inputElement.value = row.join('\n')
+}
+
+function makeViewList(inputList) {
+    var viewList = []
+    for (const jukugo of inputList) {
+        viewList.push(viewJukugo(jukugo))
+    }
+    return viewList
+}
+
+function viewJukugo(jukugo) {
+    var viewJukugo = ""
+    for (const kanji of jukugo) {
+        viewJukugo += viewChar(kanji)
+    }
+    return viewJukugo
+}
+
+function viewChar(char) {
+    if(Number(char) >= 0) {
+        const num = Number(char) + 1
+        if (num < 10) {
+            return "0" + num.toString()
+        }
+        return num.toString()
+    }
+    return char
 }
 
 function setBoard (problemList, row) {
@@ -95,7 +139,13 @@ function getAnswerList() {
     }
     var answerList = []
     for (let num = 0; num < Object.keys(answerDict).length; num++) {
-        answerList.push(answerDict[num])
+        const char = answerDict[num]
+        if (Number(char) >= 0) {
+            answerList.push(Number(char))
+        }
+        else {
+            answerList.push(answerDict[num])
+        }
     }
     return answerList
 }

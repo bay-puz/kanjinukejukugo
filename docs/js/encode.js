@@ -1,5 +1,6 @@
 function encodeList(inputList) {
-    return inputList.join('-')
+    const viewList = makeViewList(inputList)
+    return viewList.join('-')
 }
 
 function encodeProblem(problemList) {
@@ -21,13 +22,23 @@ function encodeProblem(problemList) {
 function encodeAnswer(answerList) {
     var codeList = []
     for (const char of answerList) {
-        codeList.push(encodeKanji(char))
+        if (typeof(char) === "number") {
+            codeList.push(encodeNumber(char))
+        }
+        else {
+            codeList.push(encodeKanji(char))
+        }
     }
     return codeList.join('-')
 }
 
 function decodeList(code) {
-    return code.split('-')
+    const viewList = code.split("-")
+    var inputList = []
+    for (const line of viewList) {
+        inputList.push(normalizeJukugo(line))
+    }
+    return inputList
 }
 
 function decodeProblem(code) {
@@ -55,7 +66,12 @@ function decodeAnswer(code) {
     }
     var answerList = []
     for (const charCode of code.split('-')) {
-        answerList.push(decodeKanji(charCode))
+        if (parseInt(charCode) || parseInt(charCode) === 0) {
+            answerList.push(decodeNumber(charCode))
+        }
+        else {
+            answerList.push(decodeKanji(charCode))
+        }
     }
     return answerList
 }
