@@ -146,41 +146,38 @@ function getNumberOfElement(element){
     return -1
 }
 
-function getNukeNumber(classList) {
+function getNumberInClass(name, classList) {
     for (const className of classList) {
-        if(className.startsWith("nuke")) {
-            return Number(className.substring(4))
+        if(className.startsWith(name)) {
+            return Number(className.substring(name.length))
         }
     }
     return -1
 }
 
+function getNukeNumber(classList) {
+    return getNumberInClass("nuke", classList)
+}
+
 function getRubyNumber(classList) {
-    for (const className of classList) {
-        if(className.startsWith("ruby")) {
-            return Number(className.substring(4))
-        }
+    return getNumberInClass("ruby", classList)
+}
+
+function getNumberInId(name, id) {
+    if (id.startsWith(name)) {
+        return Number(id.substring(name.length))
     }
     return -1
 }
 
 function getCharInputNumber(id) {
-    if (id.startsWith("input")) {
-        return Number(id.substring(5))
-    }
-    return -1
+    return getNumberInId("input", id)
 }
 
 function getTableHeadNumber(id) {
-    if (id.startsWith("table")) {
-        return Number(id.substring(5))
-    }
-    return -1
+    return getNumberInId("table", id)
 }
 
 function getAnswerNumber(id) {
-    if (id.startsWith("answer")) {
-        return Number(id.substring(6))
-    }
-    return -1
+    return getNumberInId("answer", id)
 }

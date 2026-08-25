@@ -166,10 +166,6 @@ function highlight(number) {
     for (var nukeElement of nukeElements) {
         nukeElement.classList.add("highlight")
     }
-    var rubyElements = document.getElementsByClassName(getRubyClass(number))
-    for (var rubyElement of rubyElements) {
-        rubyElement.classList.add("highlight")
-    }
 
     var tableElement = document.getElementById(getTableHeadId(number))
     if (tableElement !== null) {
