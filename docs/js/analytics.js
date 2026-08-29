@@ -137,7 +137,7 @@ function showUsed(inputList) {
     }
 
     if (resultList.length === 0) {
-        return
+        resultList.push("問題なし")
     }
     var usedElement = document.getElementById("used")
     usedElement.innerHTML = null
