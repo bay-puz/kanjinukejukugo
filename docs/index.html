@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>漢字抜け熟語</title>
+        <link href="./css/main.css" rel="stylesheet" type="text/css">
+    </head>
+
+    <body>
+        <head>
+            <h1>漢字抜け熟語</h1>
+        </head>
+        <div class="settingErea">
+            <h2 class="displayEditMode">編集モード</h2>
+            <h2 class="displaySolveMode">解答モード</h2>
+            <details class=" displayEditMode">
+                <summary class="settingLabel">
+                    URL出力
+                </summary>
+                <p>
+                    <button id="showEditUrl">編集</button>
+                    <button id="showSolveUrl">解答</button>
+                    <button id="showSolveCheckUrl">正解判定付き</button>
+                </p>
+                <p id="URLLine" class="hidden"><a href id="showURL" target="_blank"></a></p>
+            </details>
+            <details class=" displayEditMode">
+                <summary class="settingLabel">
+                    番号の付け方
+                </summary>
+                <p>
+                    <button id="orderForward">出現順</button>
+                    <button id="orderBackward">逆順</button>
+                    <button id="orderRandom">ランダム</button>
+                </p>
+            </details>
+            <p id="settingSize">
+                <label for="setRow" class="settingLabel">１行の熟語数</label>
+                <input type="number" id="boardRow" min="1" value="4">
+                <label for="setRow" class="settingLabel">解答表の幅</label>
+                <input type="number" id="tableRow" min="3" value="20">
+            </p>
+        </div>
+        <div class="inputErea displayEditMode">
+            <label for="inputText">熟語を入力（空白・改行で区切る）</label>
+            <br>
+            <textarea id="inputText" name="t"></textarea>
+        </div>
+        <br>
+        <div id="analyticsErea" class="displayEditMode">
+            <details>
+                <summary>統計情報</summary>
+                <p>全体<div id="summarized" class="info"></div></p>
+                <p>漢字の使用数<div id="count" class="info"></div></p>
+                <p>熟語のヒント数<div id="hint" class="info"></div></p>
+                <p>抜けている漢字の使われ方<div id="used" class="info"></div></p>
+            </details>
+        </div>
+        <div id="problem">
+            <p id="board"></p>
+            <p id="table"></p>
+        </div>
+        <div id="answerCheckErea" class="hidden">
+            <button id="checkAnswer">正解判定</button>
+        </div>
+        <script type="text/javascript" src="./js/encode.js"></script>
+        <script type="text/javascript" src="./js/convert.js"></script>
+        <script type="text/javascript" src="./js/analytics.js"></script>
+        <script type="text/javascript" src="./js/io.js"></script>
+        <script type="text/javascript" src="./js/elements.js"></script>
+        <script type="text/javascript" src="./js/main.js"></script>
+    </body>
+</html>

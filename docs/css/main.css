@@ -1,0 +1,112 @@
+body {
+    text-align: center;
+}
+
+button {
+    padding: 4px;
+    border-radius: 0.5em;
+    background-color: lightblue;
+    border: none;
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+footer {
+    text-align: end;
+}
+
+.hidden {
+    display: none;
+}
+
+.settingErea {
+    background-color: whitesmoke;
+    padding-bottom: 0.1em;
+}
+
+.settingLabel {
+    color: darkblue;
+    font-size: small;
+}
+
+#URLLine {
+    width: 30em;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#settingSize input {
+    width: 3em;
+}
+
+#inputText {
+    height: 10em;
+    width: 40em;
+}
+
+.info {
+    text-align: center;
+    font-size: small;
+}
+
+#board .jukugo {
+    line-height: 2.5em;
+    margin-left: 0.7em;
+    margin-right: 0.7em;
+}
+
+#board .kanji {
+    margin-left: 0.4em;
+    margin-right: 0.4em;
+}
+
+#board ruby {
+    ruby-position: under;
+    ruby-align: center;
+}
+
+#board rt {
+    font-size: x-small;
+    letter-spacing: 0em;
+    color: black;
+}
+
+.answered {
+    color: green;
+}
+
+#table table {
+    border: solid;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#table th{
+    font-size: small;
+    border: thin solid;
+}
+
+#table td{
+    border: thin solid;
+    width: 1.5em;
+    height: 1.5em;
+}
+
+#table .charInput {
+    width: 1.2em;
+    border: none;
+    text-align: center;
+}
+
+.highlight {
+    background-color: beige;
+}
