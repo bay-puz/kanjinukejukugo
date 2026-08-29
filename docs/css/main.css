@@ -34,7 +34,7 @@ footer {
 
 .settingLabel {
     color: darkblue;
-    font-size: large;
+    font-size: small;
 }
 
 #URLLine {
@@ -58,10 +58,14 @@ footer {
 }
 
 #board .jukugo {
-    letter-spacing: 0.7em;
     line-height: 2.5em;
-    margin-left: 1em;
-    margin-right: 1em;
+    margin-left: 0.7em;
+    margin-right: 0.7em;
+}
+
+#board .kanji {
+    margin-left: 0.4em;
+    margin-right: 0.4em;
 }
 
 #board ruby {
@@ -72,7 +76,11 @@ footer {
 #board rt {
     font-size: x-small;
     letter-spacing: 0em;
-    margin-right: 0.7em;
+    color: black;
+}
+
+.answered {
+    color: green;
 }
 
 #table table {

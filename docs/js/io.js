@@ -168,6 +168,9 @@ function writeChar(num, char) {
     var charElements = document.getElementsByClassName(getNukeClass(num))
     for (var charElement of charElements) {
         const newElement = createNukeKanjiElement(num, char)
+        if (char != defaultChar()) {
+            newElement.classList.add("answered")
+        }
         charElement.replaceWith(newElement)
     }
 }

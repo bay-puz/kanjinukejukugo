@@ -29,6 +29,7 @@ function createJukugoElement(jukugo) {
 function createHintKanjiElement(kanji) {
     const element = document.createElement("span")
     element.innerText = kanji
+    element.classList.add("kanji")
     return element
 }
 
@@ -36,6 +37,7 @@ function createNukeKanjiElement(number, kanji = "") {
     kanji = (kanji.length === 0)? defaultChar(): kanji
     const element = document.createElement("ruby")
     element.innerText = kanji
+    element.classList.add("kanji")
     element.classList.add(getNukeClass(number))
 
     var rtElement = document.createElement("rt")
